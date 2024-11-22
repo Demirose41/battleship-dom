@@ -33,6 +33,15 @@ function createGrid(grid) {
     return gridElement    
 }
 
+
+function isGameOver(board) {
+    if(board.isGameOver()){
+        removeClassHandlers('.square')
+        alert("game-over")
+        revealEndState()
+    }
+}
+
 function squareClickHandler(square) {
     const row = square.target.dataset.row
     const col = square.target.dataset.col
@@ -42,23 +51,40 @@ function squareClickHandler(square) {
     }else{
         square.target.classList.add("hit")
         square.target.innerText = hit
+        isGameOver(board);
     }
-    if(board.isGameOver()){
-        alert("game-over")
-        removeClassHandlers('.square')
-        const victoryMessage = document.querySelector(".result-message")
-        victoryMessage.innerText = "YOU WIN"
-        victoryMessage.classList.remove('hidden')
-    }
-    // debugger
 }
+
+function resetButtonHandler(button){
+    grid.remove()
+    hideEndState()
+    board = new Board()
+    grid = createGrid(board.grid)
+    document.body.appendChild(grid)
+}
+
+function revealEndState(){
+    const victoryMessage = document.querySelector(".result-message")
+    // const resetGame = document.querySelector(".reset-game")
+    victoryMessage.innerText = "YOU WIN"
+    victoryMessage.classList.remove('hidden')
+}
+
+function hideEndState(){
+    document.querySelector(".result-message").classList.add('hidden')
+}
+
 
 function removeClassHandlers(className) {
     const nodes = document.querySelectorAll(className)
     nodes.forEach((node) => node.removeEventListener("click", squareClickHandler))
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+    const resetButton = document.querySelector(".reset-game")
+    resetButton.addEventListener("click", resetButtonHandler)
+})
 // Your code here
 
-const grid = createGrid(board.grid)
+let grid = createGrid(board.grid)
 document.body.appendChild(grid)

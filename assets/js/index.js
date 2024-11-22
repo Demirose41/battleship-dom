@@ -38,13 +38,24 @@ function squareClickHandler(square) {
     const col = square.target.dataset.col
     const hit = board.makeHit(row, col)
     if(hit === null){
-        square.target.setAttribute("style", "background-color: red")
         square.target.classList.add("miss")
     }else{
         square.target.classList.add("hit")
         square.target.innerText = hit
     }
+    if(board.isGameOver()){
+        alert("game-over")
+        removeClassHandlers('.square')
+        const victoryMessage = document.querySelector(".result-message")
+        victoryMessage.innerText = "YOU WIN"
+        victoryMessage.classList.remove('hidden')
+    }
     // debugger
+}
+
+function removeClassHandlers(className) {
+    const nodes = document.querySelectorAll(className)
+    nodes.forEach((node) => node.removeEventListener("click", squareClickHandler))
 }
 
 // Your code here

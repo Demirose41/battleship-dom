@@ -11,6 +11,7 @@ function createSquare(row, col) {
     square.setAttribute("class", "square")
     square.dataset.row = row;
     square.dataset.col = col
+    square.addEventListener("click", squareClickHandler)
     return square
 }
 
@@ -30,6 +31,20 @@ function createGrid(grid) {
         gridElement.appendChild(row)
     }
     return gridElement    
+}
+
+function squareClickHandler(square) {
+    const row = square.target.dataset.row
+    const col = square.target.dataset.col
+    const hit = board.makeHit(row, col)
+    if(hit === null){
+        square.target.setAttribute("style", "background-color: red")
+        square.target.classList.add("miss")
+    }else{
+        square.target.classList.add("hit")
+        square.target.innerText = hit
+    }
+    // debugger
 }
 
 // Your code here
